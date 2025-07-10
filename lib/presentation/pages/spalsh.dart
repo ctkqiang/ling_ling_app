@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ling_ling_app/presentation/pages/home_page.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatefulWidget {
@@ -15,9 +17,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Future.delayed(Duration(seconds: widget.duration), () {
-      if (super.mounted) {
-        // TODO
-      }
+      if (super.mounted) Get.to(() => const HomePage());
     });
   }
 
@@ -26,21 +26,23 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 100),
             Lottie.asset(
               'assets/splash.json',
               animate: true,
               repeat: true,
               frameRate: FrameRate.max,
-              height: 200,
-              width: 200,
+              height: 250,
+              width: 250,
             ),
+            const SizedBox(height: 20),
             const Text(
               '不接未知，不信忽悠，数据归你。',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 180),
           ],
         ),
       ),

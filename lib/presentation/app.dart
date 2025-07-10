@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:ling_ling_app/main.dart';
 import 'package:ling_ling_app/presentation/pages/spalsh.dart';
 
@@ -13,7 +15,7 @@ class LingLingApp extends StatefulWidget {
 class _LingLingAppState extends State<LingLingApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       key: Key("$appName:main"),
       title: widget.appName,
       theme: ThemeData(
@@ -23,6 +25,9 @@ class _LingLingAppState extends State<LingLingApp> {
           titleTextStyle: TextStyle(color: Colors.white),
         ),
       ),
+      color: Colors.pink.shade100,
+      enableLog: kDebugMode,
+      locale: Locale("zh"),
       darkTheme: ThemeData.dark(useMaterial3: true),
       home: SplashPage(key: Key('$appName:splash'), duration: 3),
     );
