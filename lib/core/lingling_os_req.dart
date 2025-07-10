@@ -1,7 +1,8 @@
 import 'package:ling_ling_app/models/contacts.dart';
 
 abstract class LinglingOsReq {
-  void setDefault();
+  Future<void> setDefault();
+  Future<void> requestToRunInBackground();
 
   Future<List<Contacts>> getContacts(bool isPermissionGranted);
   Future<void> openAppSettings();
