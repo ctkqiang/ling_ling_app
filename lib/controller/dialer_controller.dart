@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ling_ling_app/core/ling_ling_call_logic.dart';
 import 'package:ling_ling_app/models/contacts.dart';
@@ -11,7 +12,12 @@ class DialerController extends GetxController implements LingLingCallLogic {
   final RxString phoneNumber = ''.obs;
 
   void clear() => phoneNumber.value = '';
-  void append(String value) => phoneNumber.value += value;
+
+  void append(String value) {
+    phoneNumber.value += value;
+
+    HapticFeedback.lightImpact();
+  }
 
   void delete() {
     if (phoneNumber.value.isNotEmpty) {

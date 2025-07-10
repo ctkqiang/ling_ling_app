@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ling_ling_app/controller/dialer_controller.dart';
 
 class DialerPage extends StatefulWidget {
-  const DialerPage({Key? key}) : super(key: key);
+  const DialerPage({super.key});
 
   @override
   State<DialerPage> createState() => _DialerPageState();
@@ -12,18 +12,34 @@ class DialerPage extends StatefulWidget {
 class _DialerPageState extends State<DialerPage> {
   final dialerController = DialerController.to;
 
-  Widget _buildKey(String value) {
-    return GestureDetector(
-      onTap: () => dialerController.append(value),
+  Widget _buildKey(String digit, [String? letters]) {
+    return InkResponse(
+      onTapDown: (_) => dialerController.append(digit),
+      onLongPress: () => (digit == '0') ? dialerController.append('+') : null,
       child: Container(
-        alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.pink.shade100,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
         ),
-        child: Text(
-          value,
-          style: const TextStyle(fontSize: 28, color: Colors.black87),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              digit,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            if (letters != null)
+              Text(
+                letters,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -31,74 +47,100 @@ class _DialerPageState extends State<DialerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            Obx(
-              () => Text(
-                dialerController.phoneNumber.value,
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              Obx(
+                () => Center(
+                  child: Text(
+                    dialerController.phoneNumber.value,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    selectionColor: Theme.of(context).colorScheme.primary,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                mainAxisSpacing: 18,
-                crossAxisSpacing: 18,
-                childAspectRatio: 1,
+              const SizedBox(height: 35),
+              Expanded(
+                child: GridView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 2,
+                    childAspectRatio: 1.2,
+                  ),
+                  children: [
+                    _buildKey('1'),
+                    _buildKey('2', 'ABC'),
+                    _buildKey('3', 'DEF'),
+                    _buildKey('4', 'GHI'),
+                    _buildKey('5', 'JKL'),
+                    _buildKey('6', 'MNO'),
+                    _buildKey('7', 'PQRS'),
+                    _buildKey('8', 'TUV'),
+                    _buildKey('9', 'WXYZ'),
+                    _buildKey('*'),
+                    _buildKey('0', '+'),
+                    _buildKey('#'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ...[
-                    '1',
-                    '2',
-                    '3',
-                    '4',
-                    '5',
-                    '6',
-                    '7',
-                    '8',
-                    '9',
-                    '*',
-                    '0',
-                    '#',
-                  ].map(_buildKey),
+                  IconButton(
+                    icon: const Icon(Icons.backspace_outlined),
+                    color: Theme.of(context).colorScheme.onSurface,
+                    iconSize: 30,
+                    onPressed: dialerController.delete,
+                    tooltip: '删除',
+                  ),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withAlpha(200),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: dialerController.call,
+                      color: Theme.of(context).colorScheme.primary,
+
+                      icon: const Icon(
+                        Icons.call,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.person_add_alt_1),
+                    color: Theme.of(context).colorScheme.secondary,
+                    iconSize: 30,
+                    onPressed: () {},
+                    tooltip: '添加联系人',
+                  ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.backspace_outlined),
-                  color: Colors.grey.shade700,
-                  iconSize: 32,
-                  onPressed: dialerController.delete,
-                ),
-                FloatingActionButton(
-                  onPressed: dialerController.call,
-                  backgroundColor: Colors.green,
-                  elevation: 0.0,
-
-                  child: const Icon(Icons.call, color: Colors.white),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.person_add_alt_1),
-                  onPressed: () => dialerController.saveContact,
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-          ],
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

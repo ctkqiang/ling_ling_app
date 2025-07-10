@@ -19,6 +19,7 @@ class _LingLingAppState extends State<LingLingApp> {
       key: Key("$appName:main"),
       title: widget.appName,
       theme: ThemeData(
+        primaryColor: Colors.pink.shade300,
         appBarTheme: AppBarTheme(
           color: Colors.pink.shade100,
           elevation: 0.0,

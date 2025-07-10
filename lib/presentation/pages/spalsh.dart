@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ling_ling_app/presentation/pages/fragments/dialer_page.dart';
 import 'package:ling_ling_app/presentation/pages/home_page.dart';
 import 'package:lottie/lottie.dart';
 
@@ -17,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Future.delayed(Duration(seconds: widget.duration), () {
-      if (super.mounted) Get.to(() => const HomePage());
+      if (super.mounted) Get.to(() => const DialerPage());
     });
   }
 
