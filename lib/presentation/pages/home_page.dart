@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ling_ling_app/presentation/components/bottom_nav_bar.dart';
+import 'package:ling_ling_app/presentation/pages/fragments/dialer_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,8 +10,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+
+  // TODO  CHanGE
+  final List<Widget> _pages = [
+    const DialerPage(),
+    const Center(child: Text("工具页面")),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => super.setState(() => _currentIndex = index),
+      ),
+    );
   }
 }

@@ -29,7 +29,7 @@ class _LingLingAppState extends State<LingLingApp> {
       enableLog: kDebugMode,
       locale: Locale("zh"),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      home: SplashPage(key: Key('$appName:splash'), duration: 3),
+      home: SplashPage(key: Key('$appName:splash'), duration: 5),
     );
   }
 }
