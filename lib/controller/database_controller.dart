@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:ling_ling_app/core/linling_db.dart';
+import 'package:ling_ling_app/models/database/scammers_data.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseController extends GetxController implements LingLingDb {
   static DatabaseController get to => Get.put(DatabaseController.create());
@@ -7,9 +10,46 @@ class DatabaseController extends GetxController implements LingLingDb {
   DatabaseController._();
   DatabaseController.create() : this._();
 
+  final scammerTableName = 'scammers';
+
+  static Database? _db;
+
+  Future<Database> get database async {
+    _db ??= await initDatabase();
+    return _db!;
+  }
+
+  Future<Database> initDatabase() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'contacts.db');
+
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  }
+
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE $scammerTableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        phone TEXT,
+        reportedBy TEXT,
+        createdAt TEXT
+      )
+    ''');
+  }
+
   @override
   Future<void> getUserCountryCode() {
-    // TODO: implement getUserCountryCode
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ScammersData>> getScammersData() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Database> insert(ScammersData scammerData) {
     throw UnimplementedError();
   }
 }
