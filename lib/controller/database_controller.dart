@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_defend/flutter_defend.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:ling_ling_app/core/linling_db.dart';
 import 'package:ling_ling_app/models/database/scammers_data.dart';
 import 'package:ling_ling_app/models/database/users.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v6.dart';
 
 class DatabaseController extends GetxController implements LingLingDb {
   static DatabaseController get to => Get.put(DatabaseController.create());
@@ -20,6 +23,7 @@ class DatabaseController extends GetxController implements LingLingDb {
   final version = 1;
 
   final logger = Logger();
+  final getStorage = GetStorage();
   final storage = FlutterDefend.secureStorage;
 
   final RxString username = ''.obs;
@@ -93,17 +97,26 @@ class DatabaseController extends GetxController implements LingLingDb {
     return response;
   }
 
-  Future<void> createLocalUser({required Users users}) async {
+  Future<void> createLocalUser({required String user}) async {
+    assert(user.isNotEmpty, "用户 name 不能为空！");
+
     final userStorage = FlutterDefend.withPassphrase("username-salted");
-    await userStorage.write("user", users.name);
+    final cUser = userStorage.cipher(user, 30);
+
+    if (kDebugMode) logger.i("📤 写入用户: $cUser");
+
+    await getStorage.write('user', cUser);
+    await userStorage.write('user', cUser);
   }
 
   Future<void> getUser() async {
-    final userStorage = FlutterDefend.withPassphrase("username-salted");
-    final user = await userStorage.read("user");
+    final user = await getStorage.read("user");
 
-    username.value = user!;
+    logger.i("📥 读取到用户: $user");
 
+    username.value = user ?? "hashed_${Uuid().v6()}";
     notifyChildrens();
+
+    return;
   }
 }

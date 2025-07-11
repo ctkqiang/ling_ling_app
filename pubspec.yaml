@@ -23,14 +23,22 @@ dependencies:
   sqflite: ^2.4.2
   flutter_defend: ^0.0.2
   flutter_root_jailbreak: ^2.0.2
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  image_path: 'assets/logo.png'
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/splash.json
+    - assets/logo.png

@@ -40,7 +40,7 @@ class _ToolBoxState extends State<ToolBox> {
             databaseController.username.value,
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondaryContainer,
-              fontSize: 20,
+              fontSize: 15,
             ),
           ),
         ),

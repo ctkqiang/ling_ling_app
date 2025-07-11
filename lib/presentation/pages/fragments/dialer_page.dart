@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ling_ling_app/controller/database_controller.dart';
 import 'package:ling_ling_app/controller/dialer_controller.dart';
-import 'package:ling_ling_app/models/database/users.dart';
+
 import 'package:ling_ling_app/presentation/components/username_config.dart';
 import 'package:ling_ling_app/presentation/pages/fragments/tool_box_page.dart';
 
@@ -23,10 +23,12 @@ class _DialerPageState extends State<DialerPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (super.mounted && databaseController.username.isNotEmpty) {
-        showUsernameDialog(super.context, (name) {
-          databaseController.createLocalUser(users: Users(id: 0, name: name));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await databaseController.getUser();
+
+      if (super.mounted && databaseController.username.isEmpty) {
+        showUsernameDialog(super.context, (name) async {
+          await databaseController.createLocalUser(user: name);
         });
       }
     });
