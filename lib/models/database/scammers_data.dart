@@ -1,4 +1,5 @@
 class ScammersData {
+  final int? id;
   final String name;
   final String phoneNumber;
   final String reporter;
@@ -6,6 +7,7 @@ class ScammersData {
   final int vote;
 
   ScammersData({
+    this.id,
     required this.name,
     required this.phoneNumber,
     required this.reporter,
@@ -15,6 +17,7 @@ class ScammersData {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'phoneNumber': phoneNumber,
       'reporter': reporter,
@@ -25,6 +28,7 @@ class ScammersData {
 
   factory ScammersData.fromMap(Map<String, dynamic> map) {
     return ScammersData(
+      id: map['id'],
       name: map['name'],
       phoneNumber: map['phoneNumber'],
       reporter: map['reporter'],

@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ling_ling_app/controller/database_controller.dart';
 import 'package:ling_ling_app/controller/dialer_controller.dart';
+import 'package:ling_ling_app/models/database/users.dart';
+import 'package:ling_ling_app/presentation/components/username_config.dart';
 import 'package:ling_ling_app/presentation/pages/fragments/tool_box_page.dart';
 
 class DialerPage extends StatefulWidget {
@@ -14,6 +17,18 @@ class DialerPage extends StatefulWidget {
 
 class _DialerPageState extends State<DialerPage> {
   final dialerController = DialerController.to;
+  final databaseController = DatabaseController.to;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (super.mounted) {
+      showUsernameDialog(super.context, (name) {
+        databaseController.createLocalUser(users: Users(id: 0, name: name));
+      });
+    }
+  }
 
   Widget _buildKey(String digit, [String? letters]) {
     return Material(

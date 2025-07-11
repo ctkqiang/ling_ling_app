@@ -5,5 +5,5 @@ abstract class LingLingDb {
   Future<List<ScammersData>> getScammersData();
   Future<int> insert(ScammersData scammerData);
   Future<int> delete(ScammersData scammerData);
-  Future<int> update(ScammersData scammerData);
+  Future<int> upsert(ScammersData scammerData);
 }
