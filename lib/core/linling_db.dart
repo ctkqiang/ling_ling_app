@@ -4,5 +4,5 @@ import 'package:sqflite/sqflite.dart';
 abstract class LingLingDb {
   Future<void> getUserCountryCode();
   Future<List<ScammersData>> getScammersData();
-  Future<Database> insert(ScammersData scammerData);
+  Future<int> insert(ScammersData scammerData);
 }
