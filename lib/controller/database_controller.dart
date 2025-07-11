@@ -14,13 +14,15 @@ class DatabaseController extends GetxController implements LingLingDb {
   DatabaseController._();
   DatabaseController.create() : this._();
 
+  static Database? _db;
+
   final scammerTableName = 'scammers';
   final version = 1;
 
   final logger = Logger();
   final storage = FlutterDefend.secureStorage;
 
-  static Database? _db;
+  final RxString username = ''.obs;
 
   Future<Database> get database async {
     _db ??= await initDatabase();
@@ -96,9 +98,12 @@ class DatabaseController extends GetxController implements LingLingDb {
     await userStorage.write("user", users.name);
   }
 
-  Future<String> get user async {
+  Future<void> getUser() async {
     final userStorage = FlutterDefend.withPassphrase("username-salted");
     final user = await userStorage.read("user");
-    return user!;
+
+    username.value = user!;
+
+    notifyChildrens();
   }
 }

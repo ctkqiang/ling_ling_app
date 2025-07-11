@@ -119,7 +119,7 @@ packages:
     source: hosted
     version: "5.0.0"
   flutter_root_jailbreak:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_root_jailbreak
       sha256: "69357136df3a3da8a6e0fed97b8444315181e7b518728f99d32968af2d40998e"

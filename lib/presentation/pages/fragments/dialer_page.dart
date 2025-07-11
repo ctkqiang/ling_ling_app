@@ -23,11 +23,13 @@ class _DialerPageState extends State<DialerPage> {
   void initState() {
     super.initState();
 
-    if (super.mounted) {
-      showUsernameDialog(super.context, (name) {
-        databaseController.createLocalUser(users: Users(id: 0, name: name));
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (super.mounted && databaseController.username.isNotEmpty) {
+        showUsernameDialog(super.context, (name) {
+          databaseController.createLocalUser(users: Users(id: 0, name: name));
+        });
+      }
+    });
   }
 
   Widget _buildKey(String digit, [String? letters]) {
