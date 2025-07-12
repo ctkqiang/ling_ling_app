@@ -6,4 +6,9 @@ abstract class LingLingDb {
   Future<int> insert(ScammersData scammerData);
   Future<int> delete(ScammersData scammerData);
   Future<int> upsert(ScammersData scammerData);
+  Future<void> createTableSupabase(ScammersData scammerData);
+  Future<List<ScammersData>> getScammers();
+  Future<ScammersData?> getScammerByPhone(String phoneNumber);
+  Future<void> updateVote(int id, int newVote);
+  Future<void> deleteScammer(int id);
 }

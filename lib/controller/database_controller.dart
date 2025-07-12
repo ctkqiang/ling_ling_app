@@ -7,6 +7,7 @@ import 'package:ling_ling_app/models/database/users.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/v6.dart';
 
@@ -23,6 +24,7 @@ class DatabaseController extends GetxController implements LingLingDb {
 
   final logger = Logger();
   final getStorage = GetStorage();
+  final supabase = Supabase.instance.client;
 
   final RxString username = ''.obs;
 
@@ -112,5 +114,53 @@ class DatabaseController extends GetxController implements LingLingDb {
     notifyChildrens();
 
     return;
+  }
+
+  @override
+  Future<void> createTableSupabase(ScammersData scammerData) async {
+    final response = await supabase
+        .from('scammers')
+        .insert(scammerData.toMap());
+    if (kDebugMode && response.error != null) {
+      logger.e('''
+      插入数据失败！
+      错误信息: ${response.error!}
+      数据: ${scammerData.toMap()}
+      ''');
+    }
+  }
+
+  @override
+  Future<void> deleteScammer(int id) async {
+    final response = await supabase
+        .from(scammerTableName)
+        .delete()
+        .eq('id', id);
+
+    if (kDebugMode && response.error != null) {
+      logger.e('''
+      删除数据失败！
+      错误信息: ${response.error!}
+      数据: $id
+      ''');
+    }
+  }
+
+  @override
+  Future<ScammersData?> getScammerByPhone(String phoneNumber) {
+    // TODO: implement getScammerByPhone
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ScammersData>> getScammers() {
+    // TODO: implement getScammers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateVote(int id, int newVote) {
+    // TODO: implement updateVote
+    throw UnimplementedError();
   }
 }

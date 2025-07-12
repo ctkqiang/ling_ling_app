@@ -26,6 +26,24 @@ class ScammersData {
     };
   }
 
+  ScammersData copyWith({
+    int? id,
+    String? name,
+    String? phoneNumber,
+    String? reporter,
+    String? date,
+    int? vote,
+  }) {
+    return ScammersData(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      reporter: reporter ?? this.reporter,
+      date: date ?? this.date,
+      vote: vote ?? this.vote,
+    );
+  }
+
   factory ScammersData.fromMap(Map<String, dynamic> map) {
     return ScammersData(
       id: map['id'],
@@ -39,5 +57,10 @@ class ScammersData {
 
   List<ScammersData> fromMapList(List<Map<String, dynamic>> mapList) {
     return mapList.map((map) => ScammersData.fromMap(map)).toList();
+  }
+
+  @override
+  String toString() {
+    return 'ScammersData(id: $id, name: $name, phoneNumber: $phoneNumber, vote: $vote)';
   }
 }
