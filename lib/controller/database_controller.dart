@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_defend/flutter_defend.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ling_ling_app/core/linling_db.dart';
@@ -24,7 +23,6 @@ class DatabaseController extends GetxController implements LingLingDb {
 
   final logger = Logger();
   final getStorage = GetStorage();
-  final storage = FlutterDefend.secureStorage;
 
   final RxString username = ''.obs;
 
@@ -100,13 +98,9 @@ class DatabaseController extends GetxController implements LingLingDb {
   Future<void> createLocalUser({required String user}) async {
     assert(user.isNotEmpty, "用户 name 不能为空！");
 
-    final userStorage = FlutterDefend.withPassphrase("username-salted");
-    final cUser = userStorage.cipher(user, 30);
+    if (kDebugMode) logger.i("📤 写入用户: $user");
 
-    if (kDebugMode) logger.i("📤 写入用户: $cUser");
-
-    await getStorage.write('user', cUser);
-    await userStorage.write('user', cUser);
+    await getStorage.write('user', user);
   }
 
   Future<void> getUser() async {
